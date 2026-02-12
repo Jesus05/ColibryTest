@@ -182,7 +182,7 @@
       <time>
        <hour>0</hour>
        <minute>0</minute>
-       <second>1</second>
+       <second>0</second>
       </time>
      </property>
      <property name="currentSection">
@@ -244,7 +244,7 @@
      <string>%p% %v из %m</string>
     </property>
    </widget>
-   <widget class="QProgressBar" name="pbCurrent">
+   <widget class="QProgressBar" name="pbMbytes">
     <property name="geometry">
      <rect>
       <x>20</x>

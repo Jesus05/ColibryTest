@@ -13,8 +13,8 @@ public:
     void start(const Settings &settings);
 
 signals:
-    void fileFound(const QString &path);
-    void fileProgress(const QString &path, qint64 processed, qint64 total);
+    void fileFound(const QString &path, qint64 size);
+    void fileProgress(const QString &path, qint64 processed, qint64 total, qint64 bytesRead);
     void fileFinished(const QString &path, bool success);
     void allFinished();
 

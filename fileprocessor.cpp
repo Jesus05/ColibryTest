@@ -34,23 +34,19 @@ void FileProcessor::onTimer()
 
 void FileProcessor::processFiles()
 {
-    QDir dir("."); // входные файлы в текущей папке
-    QStringList nameFilters;
-    nameFilters << m_settings.fileMask;
-    QStringList entries = dir.entryList(nameFilters, QDir::Files);
+    QStringList files = findFiles();
 
-    QRegularExpression maskRegex(QRegularExpression::wildcardToRegularExpression(m_settings.fileMask));
-    for (const QString &entry : entries) {
-        if (maskRegex.match(entry).hasMatch()) {
-            processFile(dir.absoluteFilePath(entry));
-        }
+    for (const QString &file : files) {
+        QFileInfo info(file);
+        emit fileFound(file, info.size());
     }
+
+    for (const QString &file : files)
+        processFile(file);
 }
 
 void FileProcessor::processFile(const QString &inputPath)
 {
-    emit fileFound(inputPath);
-
     QFile inputFile(inputPath);
     if (!inputFile.open(QIODevice::ReadOnly)) {
         emit fileFinished(inputPath, false);
@@ -86,7 +82,7 @@ void FileProcessor::processFile(const QString &inputPath)
         outputFile.write(buffer.constData(), bytesRead);
         totalRead += bytesRead;
 
-        emit fileProgress(inputPath, totalRead, fileSize);
+        emit fileProgress(inputPath, totalRead, fileSize, bytesRead);
     }
 
     inputFile.close();
@@ -96,6 +92,23 @@ void FileProcessor::processFile(const QString &inputPath)
         QFile::remove(inputPath);
 
     emit fileFinished(inputPath, true);
+}
+
+QStringList FileProcessor::findFiles() const
+{
+    QDir dir("."); // входные файлы в текущей папке
+    QStringList nameFilters;
+    nameFilters << m_settings.fileMask;
+    QStringList entries = dir.entryList(nameFilters, QDir::Files);
+
+    QRegularExpression maskRegex(QRegularExpression::wildcardToRegularExpression(m_settings.fileMask));
+    QStringList result;
+    for (const QString &entry : entries) {
+        if (maskRegex.match(entry).hasMatch()) {
+            result << dir.absoluteFilePath(entry);
+        }
+    }
+    return result;
 }
 
 QString FileProcessor::uniqueOutputPath(const QString &fileName) const
