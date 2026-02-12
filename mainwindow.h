@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "processingmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,5 +25,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    ProcessingManager manager;
 };
 #endif // MAINWINDOW_H

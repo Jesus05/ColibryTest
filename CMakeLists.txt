@@ -23,6 +23,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ColibryTest
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        settings.h settings.cpp
+        processingmanager.h processingmanager.cpp
+        fileprocessor.h fileprocessor.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ColibryTest APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

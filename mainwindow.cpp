@@ -29,6 +29,15 @@ void MainWindow::on_pbPath_clicked()
 
 void MainWindow::on_pbStart_clicked()
 {
-    std::cout << " Run!" << std::endl;
+    Settings s;
+    s.fileMask = ui->leMask->text();
+    s.deleteInputFiles = ui->cbDelete->isChecked();
+    s.outputPath = ui->lePath->text();
+    s.duplicateAction = ui->rbRewrite->isChecked() ? Settings::Overwrite : Settings::AddCounter;
+    s.timerMode = ui->cbTimer->isChecked() ? Settings::Periodic : Settings::SingleRun;
+    s.pollIntervalMs = ui->teTimer->time().msec();
+    s.xorValue = (QString("0x") + ui->leXor->text()).toULongLong(nullptr, 16);
+
+    manager.start(s);
 }
 
